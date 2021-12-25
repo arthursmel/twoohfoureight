@@ -129,11 +129,19 @@ class Game:
     def move_right(self, state: State) -> State:
         return self.move(state, dir='r')
 
-    def has_2048(self, cells: Cells) -> bool:
+    def has_val(self, val: int, cells: Cells) -> bool:
         cell_vals = list(itertools.chain.from_iterable(cells))
-        return 2048 in cell_vals
+        return val in cell_vals
+
+    def has_2048(self, cells: Cells) -> bool:
+        return self.has_val(2048, cells)
+
+    def has_zero(self, cells: Cells) -> bool:
+        return self.has_val(0, cells)
 
     def has_moves(self, cells: Cells) -> bool:
+        if self.has_zero(cells): return True
+
         dim = len(cells[0])
         horizontal_has_move = any([ r[i] == r[i+1] for r in cells for i in range(dim-1) ])
         veritical_has_move = any([ 
