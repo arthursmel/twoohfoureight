@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Any, List, Tuple, NewType
+from typing import Any, List, Tuple
 from typing import Optional
 from typing import Set
 from dataclasses import dataclass
@@ -7,10 +7,7 @@ import random
 import itertools
 from curses import wrapper
 import curses
-
-Row = NewType("Row", Tuple[int])
-Cells = NewType("Cells", Tuple[Row])
-XY = NewType("XY", Tuple[int])
+from classes.types import Row, Cells, XY
 
 @dataclass(frozen=True)
 class State:
