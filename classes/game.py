@@ -76,12 +76,9 @@ class Game:
 
     def move_cells_vertical(self, cells: Cells, dir: str) -> MoveResult:
         rotated_cells = self.rotate_cells(cells, 'l')
-        print(rotated_cells)
         horizontal_dir = 'r' if dir == 'd' else 'l'
 
         rotated_new_cells, score, _ = self.move_cells_horizontal(rotated_cells, horizontal_dir)
-
-        print(rotated_new_cells)
         new_cells = self.rotate_cells(rotated_new_cells, 'r')
 
         return MoveResult(new_cells, score, new_cells != cells)

@@ -1,17 +1,19 @@
 from curses import wrapper
 from classes.game import Game
+from classes.graphics import Graphics
 import curses
 
-def main(stdscr):
-    stdscr = curses.initscr()
-    stdscr.keypad(True)
-    curses.noecho()
-    curses.cbreak()
-    
-    game = Game()
-    state = game.init_state()
 
-    stdscr.addstr(str(state))
+def main(stdscr):
+
+    game = Game()
+    graphics = Graphics()
+
+    state = game.init_state()
+    
+    graphics.draw_board(state)
+
+
 
     while state.has_moves:
         key_press = stdscr.getch()
@@ -24,15 +26,14 @@ def main(stdscr):
         elif key_press == curses.KEY_RIGHT:
             state = game.move_right(state)
 
-        stdscr.clear()
-        stdscr.addstr(str(state))
+        graphics.draw_board(state)
     
-    key_press = stdscr.getch()
-    while key_press != curses.KEY_UP:
-        stdscr.clear()
-        stdscr.addstr(str(state))
-        stdscr.addstr("You did" + ("" if state.has_2048 else " not") + " get 2048\n Press up arrow to quit")
-        key_press = stdscr.getch()
+    # key_press = stdscr.getch()
+    # while key_press != curses.KEY_UP:
+    #     stdscr.clear()
+    #     stdscr.addstr(str(state))
+    #     stdscr.addstr("You did" + ("" if state.has_2048 else " not") + " get 2048\n Press up arrow to quit")
+    #     key_press = stdscr.getch()
 
 if __name__ == '__main__':
     wrapper(main)
