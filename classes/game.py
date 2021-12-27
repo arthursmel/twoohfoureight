@@ -93,7 +93,8 @@ class Game:
             new_cells, score, valid = self.move_cells_horizontal(state.cells, dir)
 
         new_cells = self.place_random_val(new_cells) if valid else new_cells
-        return State(new_cells, has_2048=self.has_2048(new_cells), has_moves=self.has_moves(new_cells))
+        new_score = score + state.score
+        return State(new_cells, new_score, has_2048=self.has_2048(new_cells), has_moves=self.has_moves(new_cells))
         
     def move_up(self, state: State) -> State:
         return self.move(state, dir='u')
