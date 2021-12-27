@@ -1,15 +1,11 @@
-from collections import namedtuple
 from typing import Any, List, Tuple
 from typing import Optional
 from typing import Set
 from .state import State
-from .types import Row, Cells, XY, Pair
+from .types import Row, Cells, XY, Pair, SumResult, MoveResult
 import random
 import itertools
 import functools
-
-SumResult = namedtuple("SumResult", ["row", "score"])
-MoveResult = namedtuple("MoveResult", ["cells", "score", "valid"])
 
 class Game:
     def init_state(self, dim: int=4) -> State:
