@@ -1,8 +1,19 @@
-from typing import Set
-from .state import State
-from .types import Row, Cells, XY, SumResult, MoveResult
+from typing import Set, Tuple, NewType
+from collections import namedtuple
+from .state import State, Row, Cells
+from enum import Enum
 import random
 import itertools
+
+class Dir(Enum):
+    RIGHT = 'r'
+    LEFT = 'l'
+    UP = 'u'
+    DOWN = 'd'
+
+XY = NewType("XY", Tuple[int])
+SumResult = namedtuple("SumResult", ["row", "score"])
+MoveResult = namedtuple("MoveResult", ["cells", "score", "valid"])
 
 class Game:
     def init_state(self, dim: int=4) -> State:
@@ -42,10 +53,10 @@ class Game:
     def move_row_horizontal(self, row: Row, dir: str) -> SumResult:
         ns = tuple(filter(lambda i: i > 0, row))
 
-        summed, score = self.get_pair_sums(ns if dir == 'l' else ns[::-1])
+        summed, score = self.get_pair_sums(ns if dir == Dir.LEFT else ns[::-1])
         zeros = tuple(0 for _ in range(len(row) - len(summed)))
 
-        return SumResult(summed + zeros if dir == 'l' else zeros + summed[::-1], score)
+        return SumResult(summed + zeros if dir == Dir.LEFT else zeros + summed[::-1], score)
 
     def get_pair_sums(self, ns: Row) -> SumResult:
         if len(ns) in (0,1): return SumResult(ns, 0)
@@ -60,7 +71,7 @@ class Game:
         return pair_sums
 
     def rotate_cells(self, cells: Cells, dir: str) -> Cells:
-        zipped_cells = tuple(zip(*cells))[::-1] if dir == 'l' else tuple(zip(*cells[::-1]))
+        zipped_cells = tuple(zip(*cells))[::-1] if dir == Dir.LEFT else tuple(zip(*cells[::-1]))
         return tuple(tuple(row) for row in zipped_cells)
 
     def move_cells_horizontal(self, cells: Cells, dir: str) -> MoveResult:
@@ -71,17 +82,17 @@ class Game:
 
         return MoveResult(new_cells, score, new_cells != cells)
 
-    def move_cells_vertical(self, cells: Cells, dir: str) -> MoveResult:
-        rotated_cells = self.rotate_cells(cells, 'l')
-        horizontal_dir = 'r' if dir == 'd' else 'l'
+    def move_cells_vertical(self, cells: Cells, dir: Dir) -> MoveResult:
+        rotated_cells = self.rotate_cells(cells, Dir.LEFT)
+        horizontal_dir = Dir.RIGHT if dir == Dir.DOWN else Dir.LEFT
 
         rotated_new_cells, score, _ = self.move_cells_horizontal(rotated_cells, horizontal_dir)
-        new_cells = self.rotate_cells(rotated_new_cells, 'r')
+        new_cells = self.rotate_cells(rotated_new_cells, Dir.RIGHT)
 
         return MoveResult(new_cells, score, new_cells != cells)
         
-    def move(self, state: State, dir: str) -> State:
-        if dir in ('u', 'd'):
+    def move(self, state: State, dir: Dir) -> State:
+        if dir in (Dir.UP, Dir.DOWN):
             new_cells, score, valid = self.move_cells_vertical(state.cells, dir)
         else:
             new_cells, score, valid = self.move_cells_horizontal(state.cells, dir)
@@ -91,16 +102,16 @@ class Game:
         return State(new_cells, new_score, has_2048=self.has_2048(new_cells), has_moves=self.has_moves(new_cells))
         
     def move_up(self, state: State) -> State:
-        return self.move(state, dir='u')
+        return self.move(state, dir=Dir.UP)
 
     def move_down(self, state: State) -> State:
-        return self.move(state, dir='d')
+        return self.move(state, dir=Dir.DOWN)
 
     def move_left(self, state: State) -> State:
-        return self.move(state, dir='l')
+        return self.move(state, dir=Dir.LEFT)
 
     def move_right(self, state: State) -> State:
-        return self.move(state, dir='r')
+        return self.move(state, dir=Dir.RIGHT)
 
     def has_val(self, val: int, cells: Cells) -> bool:
         cell_vals = list(itertools.chain.from_iterable(cells))

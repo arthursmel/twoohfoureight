@@ -1,11 +1,10 @@
 from .state import State
-from .types import Cells
+from .state import Cells
 import curses
 import math
 
 class Graphics:
-
-    TILE_WIDTH = 9
+    TILE_WIDTH = 11
     TILE_HEIGHT = 5
     TILE_MARGIN = 2
     TILE_X_OFFSET = 4

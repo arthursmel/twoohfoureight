@@ -1,5 +1,8 @@
 from dataclasses import dataclass
-from .types import Cells
+from typing import Tuple, NewType
+
+Row = NewType("Row", Tuple[int])
+Cells = NewType("Cells", Tuple[Row])
 
 @dataclass(frozen=True)
 class State:

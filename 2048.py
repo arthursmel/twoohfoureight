@@ -6,9 +6,7 @@ import curses
 def main(stdscr):
     game = Game()
     graphics = Graphics()
-
     state = game.init_state()
-    
     graphics.draw_board(state)
 
     while state.has_moves:
