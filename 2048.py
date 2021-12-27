@@ -3,17 +3,13 @@ from classes.game import Game
 from classes.graphics import Graphics
 import curses
 
-
 def main(stdscr):
-
     game = Game()
     graphics = Graphics()
 
     state = game.init_state()
     
     graphics.draw_board(state)
-
-
 
     while state.has_moves:
         key_press = stdscr.getch()
@@ -28,7 +24,7 @@ def main(stdscr):
 
         graphics.draw_board(state)
     
-    # key_press = stdscr.getch()
+    key_press = stdscr.getch()
     # while key_press != curses.KEY_UP:
     #     stdscr.clear()
     #     stdscr.addstr(str(state))
