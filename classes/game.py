@@ -1,11 +1,8 @@
-from typing import Any, List, Tuple
-from typing import Optional
 from typing import Set
 from .state import State
-from .types import Row, Cells, XY, Pair, SumResult, MoveResult
+from .types import Row, Cells, XY, SumResult, MoveResult
 import random
 import itertools
-import functools
 
 class Game:
     def init_state(self, dim: int=4) -> State:

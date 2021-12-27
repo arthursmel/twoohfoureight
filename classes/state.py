@@ -7,7 +7,6 @@ class State:
     score: int = 0
     has_2048: bool = False
     has_moves: bool = True
-    
 
     def __str__(self) -> str:
         s = [
