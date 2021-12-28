@@ -1,5 +1,8 @@
 from dataclasses import dataclass
-from .types import Cells
+from typing import Tuple, NewType
+
+Row = NewType("Row", Tuple[int])
+Cells = NewType("Cells", Tuple[Row])
 
 @dataclass(frozen=True)
 class State:
@@ -7,7 +10,6 @@ class State:
     score: int = 0
     has_2048: bool = False
     has_moves: bool = True
-    
 
     def __str__(self) -> str:
         s = [
