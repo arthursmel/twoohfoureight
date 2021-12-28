@@ -1,5 +1,4 @@
-from .state import State
-from .state import Cells
+from .state import State, Cells
 import curses
 import math
 
