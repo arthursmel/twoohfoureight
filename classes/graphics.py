@@ -33,6 +33,7 @@ class Graphics:
         curses.init_pair(10, 202, curses.COLOR_WHITE)
         curses.init_pair(11, 196, curses.COLOR_WHITE)
         curses.init_pair(12, curses.COLOR_BLACK, curses.COLOR_WHITE)
+        curses.init_pair(13, curses.COLOR_RED, curses.COLOR_WHITE)
 
     def draw_board(self, state: State) -> None:
         dim = len(state.cells[0])
@@ -41,7 +42,6 @@ class Graphics:
         self.draw_border(dim)
         self.draw_cells(dim, cells)
         self.draw_score(dim, state.score)
-        
 
     def draw_score(self, dim: int, score: int) -> None:
         main_width = self.MAIN_X_PADDING + (dim * self.TILE_WIDTH) + (dim * self.TILE_MARGIN)
@@ -78,3 +78,8 @@ class Graphics:
         main_win = curses.newwin(main_height, main_width, 1, 1)
         main_win.border('|', '|', '-', '-', '+', '+', '+', '+')
         main_win.refresh()
+
+    def draw_end(self, has_2048: bool) -> None:
+        self.stdscr.addstr(1, 1,
+            "GAME OVER. You did" + ("" if has_2048 else " not") + " get 2048", 
+            curses.color_pair(13) | curses.A_BOLD | curses.A_REVERSE)

@@ -11,6 +11,7 @@ def main(stdscr):
 
     while state.has_moves:
         key_press = stdscr.getch()
+        
         if key_press == curses.KEY_UP:
             state = game.move_up(state)
         elif key_press == curses.KEY_DOWN:
@@ -22,12 +23,8 @@ def main(stdscr):
 
         graphics.draw_board(state)
     
+    graphics.draw_end(state.has_2048)
     key_press = stdscr.getch()
-    # while key_press != curses.KEY_UP:
-    #     stdscr.clear()
-    #     stdscr.addstr(str(state))
-    #     stdscr.addstr("You did" + ("" if state.has_2048 else " not") + " get 2048\n Press up arrow to quit")
-    #     key_press = stdscr.getch()
-
+    
 if __name__ == '__main__':
     wrapper(main)
