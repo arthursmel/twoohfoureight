@@ -91,27 +91,23 @@ class Game:
 
         return MoveResult(new_cells, score, new_cells != cells)
         
-    def move(self, state: State, dir: Dir) -> State:
-        if dir in (Dir.UP, Dir.DOWN):
-            new_cells, score, valid = self.move_cells_vertical(state.cells, dir)
-        else:
-            new_cells, score, valid = self.move_cells_horizontal(state.cells, dir)
-
+    def move(self, state: State, dir: Dir, f) -> State:
+        new_cells, score, valid = f(state.cells, dir)
         new_cells = self.place_random_val(new_cells) if valid else new_cells
         new_score = score + state.score
         return State(new_cells, new_score, has_2048=self.has_2048(new_cells), has_moves=self.has_moves(new_cells))
         
     def move_up(self, state: State) -> State:
-        return self.move(state, dir=Dir.UP)
+        return self.move(state, dir=Dir.UP, f=self.move_cells_vertical)
 
     def move_down(self, state: State) -> State:
-        return self.move(state, dir=Dir.DOWN)
+        return self.move(state, dir=Dir.DOWN, f=self.move_cells_vertical)
 
     def move_left(self, state: State) -> State:
-        return self.move(state, dir=Dir.LEFT)
+        return self.move(state, dir=Dir.LEFT, f=self.move_cells_horizontal)
 
     def move_right(self, state: State) -> State:
-        return self.move(state, dir=Dir.RIGHT)
+        return self.move(state, dir=Dir.RIGHT, f=self.move_cells_horizontal)
 
     def has_val(self, val: int, cells: Cells) -> bool:
         cell_vals = list(itertools.chain.from_iterable(cells))
